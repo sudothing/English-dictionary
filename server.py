@@ -55,6 +55,7 @@ class Dict_server():
         else:
             self.confd.send(b'ok')
 
+
     def do_poll(self):
         word = self.confd.recv(1024).decode()
         sql = 'select word,explains from dict where word=%s'
@@ -86,7 +87,8 @@ class Dict_server():
             self.confd.send(b'ok')
             time.sleep(0.1)
             for i in data:
-                self.confd.send('|'.join(i[0:2]).encode())
+                his = '|'.join(i[0:2]) + '|' + i[2].strftime('%Y-%m-%d %H:%M')
+                self.confd.send(his.encode())
                 time.sleep(0.1)
             self.confd.send('###'.encode())
 
